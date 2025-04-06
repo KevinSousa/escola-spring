@@ -1,5 +1,6 @@
 package br.com.kevin.escola.services;
 
+import br.com.kevin.escola.dto.AlunoDto;
 import br.com.kevin.escola.entities.Aluno;
 import br.com.kevin.escola.exceptions.NotFoundException;
 import br.com.kevin.escola.repositories.AlunoRepository;
@@ -27,5 +28,10 @@ public class AlunoService {
 
     public void deleteById(Long id) {
         this.alunoRepository.deleteById(id);
+    }
+
+    public AlunoDto crete(Aluno aluno) {
+        var createdAluno = this.alunoRepository.save(aluno);
+        return new AlunoDto(createdAluno.getName(), createdAluno.getCpf(), createdAluno.getDataNascimento());
     }
 }

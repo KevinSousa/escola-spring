@@ -1,5 +1,6 @@
 package br.com.kevin.escola.resources;
 
+import br.com.kevin.escola.dto.AlunoDto;
 import br.com.kevin.escola.entities.Aluno;
 import br.com.kevin.escola.exceptions.NotFoundException;
 import br.com.kevin.escola.services.AlunoService;
@@ -32,5 +33,10 @@ public class AlunoResource {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         this.alunoService.deleteById(id);
+    }
+
+    @PostMapping("")
+    public AlunoDto create(@RequestBody Aluno aluno) {
+        return alunoService.crete(aluno);
     }
 }
