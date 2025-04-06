@@ -1,6 +1,7 @@
 package br.com.kevin.escola.services;
 
 import br.com.kevin.escola.entities.Aluno;
+import br.com.kevin.escola.exceptions.NotFoundException;
 import br.com.kevin.escola.repositories.AlunoRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,11 @@ public class AlunoService {
         return this.alunoRepository.findAll();
     }
 
-    public Aluno findById(Long id) {
-        return this.alunoRepository.findById(id).orElseThrow();
+    public Aluno findById(Long id) throws NotFoundException {
+        return this.alunoRepository.findById(id).orElseThrow(() -> new NotFoundException("Aluno not found"));
+    }
+
+    public void deleteById(Long id) {
+        this.alunoRepository.deleteById(id);
     }
 }

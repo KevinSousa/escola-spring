@@ -1,12 +1,10 @@
 package br.com.kevin.escola.resources;
 
 import br.com.kevin.escola.entities.Aluno;
+import br.com.kevin.escola.exceptions.NotFoundException;
 import br.com.kevin.escola.services.AlunoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +24,12 @@ public class AlunoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Aluno> getById(@PathVariable Long id) {
+    public ResponseEntity<Aluno> getById(@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.ok(alunoService.findById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        this.alunoService.deleteById(id);
     }
 }
