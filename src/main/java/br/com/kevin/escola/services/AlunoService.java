@@ -6,6 +6,7 @@ import br.com.kevin.escola.repositories.AlunoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlunoService {
@@ -20,8 +21,8 @@ public class AlunoService {
         return this.alunoRepository.findAll();
     }
 
-    public Aluno findById(Long id) throws NotFoundException {
-        return this.alunoRepository.findById(id).orElseThrow(() -> new NotFoundException("Aluno not found"));
+    public Optional<Aluno> findById(Long id)  {
+        return this.alunoRepository.findById(id);
     }
 
     public void deleteById(Long id) {

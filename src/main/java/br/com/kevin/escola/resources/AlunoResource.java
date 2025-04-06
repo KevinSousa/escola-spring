@@ -24,8 +24,9 @@ public class AlunoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Aluno> getById(@PathVariable Long id) throws NotFoundException {
-        return ResponseEntity.ok(alunoService.findById(id));
+    public ResponseEntity<Aluno> getById(@PathVariable Long id)  {
+        var aluno = alunoService.findById(id);
+        return aluno.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
