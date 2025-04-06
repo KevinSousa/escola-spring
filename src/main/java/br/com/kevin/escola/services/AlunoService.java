@@ -18,4 +18,8 @@ public class AlunoService {
     public List<Aluno> findAll() {
         return this.alunoRepository.findAll();
     }
+
+    public Aluno findById(Long id) {
+        return this.alunoRepository.findById(id).orElseThrow();
+    }
 }
