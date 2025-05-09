@@ -1,16 +1,26 @@
 package br.com.kevin.escola.dto;
 
+import br.com.kevin.escola.entities.Aluno;
+
+import java.io.Serializable;
 import java.time.Instant;
 
 public class AlunoDto {
+    private Long id;
     private String name;
     private String cpf;
     private Instant dataNascimento;
 
-    public AlunoDto(String name, String cpf, Instant dataNascimento) {
-        this.name = name;
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
+    public AlunoDto(){}
+    public AlunoDto(Aluno aluno) {
+        this.id = aluno.getId();
+        this.name = aluno.getName();
+        this.cpf = aluno.getCpf();
+        this.dataNascimento = aluno.getDataNascimento();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

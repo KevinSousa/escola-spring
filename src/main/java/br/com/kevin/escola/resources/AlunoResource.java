@@ -2,7 +2,6 @@ package br.com.kevin.escola.resources;
 
 import br.com.kevin.escola.dto.AlunoDto;
 import br.com.kevin.escola.entities.Aluno;
-import br.com.kevin.escola.exceptions.NotFoundException;
 import br.com.kevin.escola.services.AlunoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +19,13 @@ public class AlunoResource {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Aluno>> getAll() {
+    public ResponseEntity<List<AlunoDto>> getAll() {
         return ResponseEntity.ok(alunoService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Aluno> getById(@PathVariable Long id)  {
-        var aluno = alunoService.findById(id);
-        return aluno.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<AlunoDto> getById(@PathVariable Long id)  {
+         return ResponseEntity.ok(alunoService.findById(id));
     }
 
     @DeleteMapping("/{id}")
@@ -35,8 +33,9 @@ public class AlunoResource {
         this.alunoService.deleteById(id);
     }
 
-    @PostMapping("")
-    public AlunoDto create(@RequestBody Aluno aluno) {
-        return alunoService.crete(aluno);
-    }
+//    @PostMapping("")
+//    public AlunoDto create(@RequestBody AlunoDto aluno) {
+//
+//        return alunoService.create(aluno);
+//    }
 }
