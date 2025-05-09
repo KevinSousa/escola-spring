@@ -5,7 +5,9 @@ import br.com.kevin.escola.entities.Aluno;
 import br.com.kevin.escola.services.AlunoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController()
@@ -33,9 +35,14 @@ public class AlunoResource {
         this.alunoService.deleteById(id);
     }
 
-//    @PostMapping("")
-//    public AlunoDto create(@RequestBody AlunoDto aluno) {
-//
-//        return alunoService.create(aluno);
-//    }
+    @PostMapping("")
+    public ResponseEntity<AlunoDto> create(@RequestBody AlunoDto aluno) {
+        aluno = alunoService.create(aluno);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(aluno.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
+    }
 }

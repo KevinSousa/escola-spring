@@ -36,8 +36,15 @@ public class AlunoService {
         this.alunoRepository.deleteById(id);
     }
 
-//    public AlunoDto create(AlunoDto aluno) {
-//        var createdAluno = this.alunoRepository.save(aluno);
-//        return new AlunoDto(createdAluno.getId(), createdAluno.getName());
-//    }
+    @Transactional
+    public AlunoDto create(AlunoDto alunoDto) {
+
+        Aluno aluno = new Aluno();
+        aluno.setName(alunoDto.getName());
+        aluno.setCpf(alunoDto.getCpf());
+        aluno.setDataNascimento(alunoDto.getDataNascimento());
+
+        Aluno createdAluno = this.alunoRepository.save(aluno);
+        return new AlunoDto(createdAluno);
+    }
 }
