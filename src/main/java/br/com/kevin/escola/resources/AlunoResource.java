@@ -31,8 +31,9 @@ public class AlunoResource {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         this.alunoService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("")
@@ -44,5 +45,11 @@ public class AlunoResource {
                 .buildAndExpand(aluno.getId())
                 .toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AlunoDto> update(@PathVariable Long id, @RequestBody AlunoDto aluno) {
+        aluno = alunoService.update(id, aluno);
+        return ResponseEntity.ok().body(aluno);
     }
 }

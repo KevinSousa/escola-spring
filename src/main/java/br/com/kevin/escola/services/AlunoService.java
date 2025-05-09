@@ -2,9 +2,14 @@ package br.com.kevin.escola.services;
 
 import br.com.kevin.escola.dto.AlunoDto;
 import br.com.kevin.escola.entities.Aluno;
+import br.com.kevin.escola.exceptions.DatabaseException;
 import br.com.kevin.escola.exceptions.ResourceNotFoundException;
 import br.com.kevin.escola.repositories.AlunoRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -27,13 +32,20 @@ public class AlunoService {
     }
 
     @Transactional(readOnly = true)
-    public AlunoDto findById(Long id)  {
+    public AlunoDto findById(Long id) {
         Aluno aluno = this.alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ID" + id + " not found"));
         return new AlunoDto(aluno);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteById(Long id) {
-        this.alunoRepository.deleteById(id);
+        try {
+            this.alunoRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Resource ID" + id + " not found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Integrity violation");
+        }
     }
 
     @Transactional
@@ -46,5 +58,18 @@ public class AlunoService {
 
         Aluno createdAluno = this.alunoRepository.save(aluno);
         return new AlunoDto(createdAluno);
+    }
+
+    @Transactional
+    public AlunoDto update(Long id, AlunoDto alunoDto) {
+        try {
+            Aluno aluno = alunoRepository.getReferenceById(id);
+            aluno.setName(alunoDto.getName());
+            aluno.setCpf(alunoDto.getCpf());
+            aluno.setDataNascimento(alunoDto.getDataNascimento());
+            return new AlunoDto(aluno);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("ID" + id + " not found");
+        }
     }
 }

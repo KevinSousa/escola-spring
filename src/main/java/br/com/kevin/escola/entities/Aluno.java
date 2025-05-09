@@ -16,6 +16,10 @@ public class Aluno {
     private String cpf;
     private Instant dataNascimento;
 
+    @Column()
+    private Instant createdAt;
+    private Instant updatedAt;
+
     public Aluno(Long id, String name, String cpf, Instant dataNascimento) {
         this.id = id;
         this.name = name;
